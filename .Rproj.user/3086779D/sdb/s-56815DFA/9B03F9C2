@@ -1,0 +1,17 @@
+{
+    "contents" : "library(shiny)\nlibrary(ggplot2)\nlibrary(pgmm)\ndata(olive)\nolive$Region <- as.factor(olive$Region)\nolive$Area <- as.factor(olive$Area)\nolive$Cluster <- NA\n\nshinyServer(function(input, output) {\n  \n  # Generate main description text\n  formulaText <- reactive({\n    t <- paste(\"Plotted using\",\n          input$variableX, \"and\",\n          input$variableY)\n    if (input$variableC != \"\" | input$variableS != \"\") {\n      t <- paste(t, \" and grouping by\")\n    }\n    if (input$variableC != \"\") {\n      t <- paste(t, input$variableC, \"as color\")\n    }\n    if (input$variableC != \"\" & input$variableS != \"\") {\n      t <- paste(t, \",\")\n    }\n    if (input$variableS != \"\") {\n      t <- paste(t, input$variableS, \"as shape\")\n      }\n    t <- paste(t, \".\")\n  print(t)\n  })\n  \n  output$selection <- renderText({\n    formulaText()\n  })\n  \n  # Generate clusters\n  km <- reactive({\n    kmeans(olive[, 3:10], centers = input$numK)\n  })\n  \n  oliveC <- reactive({\n    olive[, 11] <<- as.factor(km()$cluster)\n    olive\n  })\n  \n  # Generate scatter ggplot\n  output$olivePlotGG <- renderPlot({\n    g <- ggplot(data = oliveC(), aes_string(x = input$variableX, y = input$variableY)) +\n      geom_point(size = 3)\n    if (input$variableC != \"\") {g <- g + aes_string(color = input$variableC)}\n    if (input$variableS != \"\") {g <- g + aes_string(shape = input$variableS)}\n    print(g)\n  }) #, height = 600)\n  \n  # Generate description texts\n  clustersD <- reactive({\n    paste(\"Generated\", input$numK, \"clusters; sizes and centers in the tables here below.\")\n  })\n  \n  output$numClusters <- renderText({\n    clustersD()\n  })\n  output$cenClusters <- renderDataTable({\n    cbind(\n      data.frame(\"Cl.Size\"=km()$size),\n      round(km()$centers, digits = 2)\n    )\n  }, options = list(orderClasses = TRUE,\n                    paging = FALSE,\n                    searching = FALSE,\n                    searchable = FALSE))\n})\n",
+    "created" : 1450528389662.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3092360425",
+    "id" : "9B03F9C2",
+    "lastKnownWriteTime" : 1450804338,
+    "path" : "~/Documents/R Projects/Coursera - Developing Data Products/shinyapp/server.R",
+    "project_path" : "shinyapp/server.R",
+    "properties" : {
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

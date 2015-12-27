@@ -1,0 +1,51 @@
+Olive oil: correlations and clustering app
+========================================================
+author: Federico Calore
+date: 22 December 2015
+font-import: https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700
+font-family: 'Open Sans'
+transition: linear
+
+First Slide
+========================================================
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+http://rpubs.com/SAScat/Project2
+https://xiaodan.shinyapps.io/LegoSetViz
+
+https://rpubs.com/senthilkumar_k/49447
+https://senthilkumar-k.shinyapps.io/DevDataProd-CourseProject/
+
+GGplot scatter
+========================================================
+transition: zoom
+
+```{r, echo = FALSE}
+library(pgmm); library(ggplot2)
+data(olive)
+olive$Region <- as.factor(olive$Region)
+olive$Area <- as.factor(olive$Area)
+```
+
+```{r, echo=FALSE}
+ggplot(data = olive, aes_string(x = "Palmitic", y = "Palmitoleic")) +
+  geom_point(size = 2) +
+  aes_string(color = "Area") +
+  aes_string(shape = "Region")
+```
+
+Clusters of observations
+========================================================
+
+```{r}
+km <- kmeans(olive[3:10], centers = 3)
+```
+
+<small>`r km$centers`</small>
+
+Conclusions
+========================================================
+incremental: true
