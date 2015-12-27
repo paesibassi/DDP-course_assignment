@@ -9,6 +9,28 @@ transition: linear
 First Slide
 ========================================================
 
+h4("App usage instructions"),
+           p("The variable selected above will be plotted as scatter plot,
+             grouped by color and/or shape. In addition to the 8 data variables,
+             also the cluster id is available (recommended for grouping)."),
+           p("The number of clusters to be generated can be changed using the slider."),
+           p("The app will recalculate the clusters on the fly with the kmeans 
+             algorithm, using only the data variables, and the new centers will 
+             be shown in the table below the plot."),
+           h4("Dataset"),
+           
+```{r data, eval = FALSE}
+library(pgmm); data(olive)
+```
+
+Italian Olive Oil
+           
+           p("Data on the percentage composition of eight fatty acids found by
+             lipid fraction of 572 Italian olive oils. The data come from three
+             regions: Southern Italy, Sardinia, and Northern Italy. Within each
+             region there are a number of different areas.")
+
+
 - Bullet 1
 - Bullet 2
 - Bullet 3
